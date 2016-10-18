@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+target
+*.iml
+*.swp
+dataStore.json
+calcResults.json
+tmp.json
+calcTransaction.json
