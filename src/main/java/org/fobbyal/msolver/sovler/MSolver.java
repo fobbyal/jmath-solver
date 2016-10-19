@@ -18,11 +18,18 @@ import java.util.stream.Stream;
  */
 public class MSolver<N> {
 
-    Map<String, NumberMSolverMember<N>> formulaScope;
+    private final Map<String, NumberMSolverMember<N>> formulaScope;
+    private final String ident;
 
 
-    public MSolver(Map<String, NumberMSolverMember<N>> formula) {
+    public MSolver(String ident, Map<String, NumberMSolverMember<N>> formula) {
+        Objects.requireNonNull(ident);
+        this.ident = ident;
         this.formulaScope = formula;
+    }
+
+    public String getIdent() {
+        return ident;
     }
 
     public Set<String> getVars() {
@@ -55,7 +62,7 @@ public class MSolver<N> {
         if (!formulaScope.containsKey(varName)) return error(varName, "is not defined in scope", accumulatedResult);
 
         //todo: may consider using immutable set to improve performance
-        HashSet<String> newVars =new HashSet<>();
+        HashSet<String> newVars = new HashSet<>();
         newVars.addAll(forVars);
         newVars.add(varName);
 

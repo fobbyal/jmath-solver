@@ -42,11 +42,15 @@ public class MSolverUtils<N> {
         return compiler.compile(tree);
     }
 
-    public MSolver<N> createSolver(InputStream inputStream) throws IOException {
-        return new MSolver<>(compile(inputStream));
+    public MSolver<N> createSolver(String ident, InputStream inputStream) throws IOException {
+        return new MSolver<>(ident, compile(inputStream));
     }
 
     public MSolver<N> createSolver(String formula) {
-        return new MSolver<>(compile(formula));
+        return new MSolver<>("anonymous", compile(formula));
+    }
+
+    public MSolver<N> createSolver(String ident, String formula) {
+        return new MSolver<>(ident, compile(formula));
     }
 }
