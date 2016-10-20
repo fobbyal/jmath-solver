@@ -1,9 +1,9 @@
 package org.fobbyal.msolver.sovler;
 
-import org.fobbyal.msolver.sovler.tree.ComparisonPredicate;
+import org.fobbyal.msolver.sovler.tree.Comparison;
 import org.fobbyal.msolver.sovler.tree.Constant;
 import org.fobbyal.msolver.sovler.tree.NumberMSolverMember;
-import org.fobbyal.msolver.sovler.tree.Predicate;
+import org.fobbyal.msolver.sovler.tree.BooleanExpression;
 import org.fobbyal.msolver.sovler.value.ResultException;
 
 import java.util.List;
@@ -52,8 +52,8 @@ public interface NumSpec<N> {
 
     BinaryOperator<N> getPow();
 
-    ComparisonPredicate<N> createComparison(NumberMSolverMember<N> left, Predicate.Operator optr,
-                                            NumberMSolverMember<N> right);
+    Comparison<N> createComparison(NumberMSolverMember<N> left, BooleanExpression.Operator optr,
+                                   NumberMSolverMember<N> right);
 
     Function<N, N> createNegate();
 

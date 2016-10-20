@@ -9,13 +9,13 @@ import org.fobbyal.msolver.sovler.value.ValueCache;
  * Creation Time 8/9/16 1:18 AM
  * Project for jmath-solver.
  */
-public class CompositePredicate extends AbstractPredicate {
+public class CompositeBoolExpression extends AbstractBooleanExpression {
 
-    private final Predicate left;
+    private final BooleanExpression left;
     private final Operator op;
-    private final Predicate right;
+    private final BooleanExpression right;
 
-    public CompositePredicate(Predicate left, Operator op, Predicate right) {
+    public CompositeBoolExpression(BooleanExpression left, Operator op, BooleanExpression right) {
         this.left = left;
         this.op = op;
         this.right = right;
@@ -34,7 +34,7 @@ public class CompositePredicate extends AbstractPredicate {
                         .flatMap(l -> right.eval(context)
                                 .flatMap(r -> MSolverResult.of((Boolean) l || (Boolean) r)));
             default:
-                return InvalidResult.of("found invalid operator [" + op + "] for CompositePredicate");
+                return InvalidResult.of("found invalid operator [" + op + "] for CompositeBoolExpression");
         }
 
 

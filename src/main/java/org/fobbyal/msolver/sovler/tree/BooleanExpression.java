@@ -6,7 +6,7 @@ package org.fobbyal.msolver.sovler.tree;
  * Project for jmath-solver.
  */
 @FunctionalInterface
-public interface Predicate<N> extends MSolverMember<Boolean, N> {
+public interface BooleanExpression<N> extends MSolverMember<Boolean, N> {
     enum Operator {
         GT, GE, LT, LE, EQ, NEQ, AND, OR
     }

@@ -6,7 +6,7 @@ package org.fobbyal.msolver.sovler.tree;
  * Date: 8/15/2016
  * Time: 2:05 PM
  */
-public abstract class AbstractPredicate<N> implements Predicate<N> {
+public abstract class AbstractBooleanExpression<N> implements BooleanExpression<N> {
 
     private String[] vars;
 

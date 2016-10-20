@@ -1,10 +1,9 @@
 package org.fobbyal.msolver.sovler.bd;
 
 import org.fobbyal.msolver.sovler.NumSpec;
-import org.fobbyal.msolver.sovler.tree.ComparisonPredicate;
-import org.fobbyal.msolver.sovler.tree.MathFunction;
-import org.fobbyal.msolver.sovler.tree.NumberMSolverMember;
-import org.fobbyal.msolver.sovler.tree.Predicate;
+import org.fobbyal.msolver.sovler.tree.*;
+import org.fobbyal.msolver.sovler.tree.Comparison;
+import org.fobbyal.msolver.sovler.tree.BooleanExpression;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -136,7 +135,7 @@ public class BigDecimalNumSpec implements NumSpec<BigDecimal> {
     }
 
     @Override
-    public ComparisonPredicate<BigDecimal> createComparison(NumberMSolverMember<BigDecimal> left, Predicate.Operator optr, NumberMSolverMember<BigDecimal> right) {
+    public Comparison<BigDecimal> createComparison(NumberMSolverMember<BigDecimal> left, BooleanExpression.Operator optr, NumberMSolverMember<BigDecimal> right) {
         return new BigDecimalComparison(left, optr, right);
     }
 

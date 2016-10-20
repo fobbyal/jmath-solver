@@ -4,20 +4,20 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.fobbyal.msolver.antl.MSolverParser;
 import org.fobbyal.msolver.antl.MSolverParser.*;
 import org.fobbyal.msolver.sovler.tree.*;
-import org.fobbyal.msolver.sovler.tree.Predicate.Operator;
+import org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator;
 import org.fobbyal.msolver.sovler.value.InvalidResult;
 import org.fobbyal.msolver.sovler.value.MSolverResult;
 
 import java.util.*;
 
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.AND;
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.EQ;
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.GE;
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.GT;
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.LE;
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.LT;
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.NEQ;
-import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.OR;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.AND;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.EQ;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.GE;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.GT;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.LE;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.LT;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.NEQ;
+import static org.fobbyal.msolver.sovler.tree.BooleanExpression.Operator.OR;
 
 /**
  * Created by fobbyal
@@ -26,8 +26,8 @@ import static org.fobbyal.msolver.sovler.tree.Predicate.Operator.OR;
  */
 public class MSolverCompiler<N> {
 
-    private static final Predicate FALSE = context -> MSolverResult.of(false);
-    private static final Predicate TRUE = context -> MSolverResult.of(true);
+    private static final BooleanExpression FALSE = context -> MSolverResult.of(false);
+    private static final BooleanExpression TRUE = context -> MSolverResult.of(true);
 
     private static final Map<String, Operator> operatorMap = new HashMap<>();
 
@@ -43,7 +43,7 @@ public class MSolverCompiler<N> {
     }
 
 
-    final NumSpec<N> numSpec;
+    private final NumSpec<N> numSpec;
 
     public MSolverCompiler(NumSpec<N> numSpec) {
         this.numSpec = numSpec;
@@ -79,19 +79,19 @@ public class MSolverCompiler<N> {
         return new IfOperation<>(compile(predicateExpression), compile(thenValue), compile(elseValue));
     }
 
-    protected Predicate compile(Comparison_predicateContext node) {
+    protected BooleanExpression compile(Comparison_predicateContext node) {
         Value_exprContext left = (Value_exprContext) node.getChild(0);
         Operator optr = toOperator(node.getChild(1));
         Value_exprContext right = (Value_exprContext) node.getChild(2);
         return numSpec.createComparison(compile(left), optr, compile(right));
     }
 
-    protected Predicate compile(GroupedPredicateContext groupedPredicateContext) {
+    protected BooleanExpression compile(GroupedPredicateContext groupedPredicateContext) {
         return compile((Predicate_exprContext) groupedPredicateContext.getChild(1));
     }
 
-    protected Predicate compile(AndContext andContext) {
-        return new CompositePredicate(
+    protected BooleanExpression compile(AndContext andContext) {
+        return new CompositeBoolExpression(
                 compile((Predicate_exprContext) andContext.getChild(0)),
                 AND,
                 compile((Predicate_exprContext) andContext.getChild(2)));
@@ -102,8 +102,8 @@ public class MSolverCompiler<N> {
 
     }
 
-    protected Predicate compile(OrContext orContext) {
-        return new CompositePredicate(
+    protected BooleanExpression compile(OrContext orContext) {
+        return new CompositeBoolExpression(
                 compile((Predicate_exprContext) orContext.getChild(0)),
                 OR,
                 compile((Predicate_exprContext) orContext.getChild(2))
@@ -111,18 +111,18 @@ public class MSolverCompiler<N> {
     }
 
     @SuppressWarnings("unchecked")
-    private Predicate<N> compile(TrueOrFalseContext trueOrFalseContext) {
+    private BooleanExpression<N> compile(TrueOrFalseContext trueOrFalseContext) {
         return Boolean.valueOf(trueOrFalseContext.getText()) ? TRUE : FALSE;
     }
 
-    protected Predicate<N> compile(NotPredicateContext notPredicateContext) {
-        Predicate<N> predicate = compile((Predicate_exprContext) notPredicateContext.getChild(1));
-        return context -> predicate.eval(context).flatMap(b -> MSolverResult.of(!b));
+    protected BooleanExpression<N> compile(NotPredicateContext notPredicateContext) {
+        BooleanExpression<N> booleanExpression = compile((Predicate_exprContext) notPredicateContext.getChild(1));
+        return context -> booleanExpression.eval(context).flatMap(b -> MSolverResult.of(!b));
     }
 
 
     @SuppressWarnings("unchecked")
-    protected Predicate<N> compile(Predicate_exprContext predicate_exprContext) {
+    protected BooleanExpression<N> compile(Predicate_exprContext predicate_exprContext) {
         if (predicate_exprContext.getChild(0) instanceof Comparison_predicateContext) {
             return compile((Comparison_predicateContext) predicate_exprContext.getChild(0));
         }
