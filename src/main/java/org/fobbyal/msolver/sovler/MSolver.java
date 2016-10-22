@@ -28,11 +28,11 @@ public class MSolver<N> {
         this.formulaScope = formula;
     }
 
-    public String getIdent() {
+    public String ident() {
         return ident;
     }
 
-    public Set<String> getInputIdents() {
+    public Set<String> inputIdents() {
         return formulaScope.values().stream()
                 .map(m -> m.getVarSet().stream())
                 .reduce(Stream.empty(), Stream::concat)
@@ -40,7 +40,7 @@ public class MSolver<N> {
                 .collect(Collectors.toSet());
     }
 
-    public Set<String> getOutputIdents() {
+    public Set<String> outputIdents() {
         return formulaScope.keySet();
     }
 
