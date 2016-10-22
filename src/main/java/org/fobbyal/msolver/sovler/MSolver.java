@@ -32,12 +32,16 @@ public class MSolver<N> {
         return ident;
     }
 
-    public Set<String> getVars() {
+    public Set<String> getInputIdents() {
         return formulaScope.values().stream()
                 .map(m -> m.getVarSet().stream())
                 .reduce(Stream.empty(), Stream::concat)
                 .filter(a -> !formulaScope.containsKey(a))
                 .collect(Collectors.toSet());
+    }
+
+    public Set<String> getOutputIdents() {
+        return formulaScope.keySet();
     }
 
     private MSolverResult<N> solve(String name,
