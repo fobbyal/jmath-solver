@@ -40,6 +40,13 @@ public class MSolver<N> {
                 .collect(Collectors.toSet());
     }
 
+    public Set<String> allIdents() {
+        HashSet<String> idents = new HashSet<>();
+        idents.addAll(inputIdents());
+        idents.addAll(outputIdents());
+        return idents;
+    }
+
     public Set<String> outputIdents() {
         return formulaScope.keySet();
     }
