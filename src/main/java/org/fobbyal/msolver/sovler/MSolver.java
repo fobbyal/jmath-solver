@@ -18,19 +18,37 @@ import java.util.stream.Stream;
  */
 public class MSolver<N> {
 
-    Map<String, NumberMSolverMember<N>> formulaScope;
+    private final Map<String, NumberMSolverMember<N>> formulaScope;
+    private final String ident;
 
 
-    public MSolver(Map<String, NumberMSolverMember<N>> formula) {
+    public MSolver(String ident, Map<String, NumberMSolverMember<N>> formula) {
+        Objects.requireNonNull(ident);
+        this.ident = ident;
         this.formulaScope = formula;
     }
 
-    public Set<String> getVars() {
+    public String ident() {
+        return ident;
+    }
+
+    public Set<String> inputIdents() {
         return formulaScope.values().stream()
                 .map(m -> m.getVarSet().stream())
                 .reduce(Stream.empty(), Stream::concat)
                 .filter(a -> !formulaScope.containsKey(a))
                 .collect(Collectors.toSet());
+    }
+
+    public Set<String> allIdents() {
+        HashSet<String> idents = new HashSet<>();
+        idents.addAll(inputIdents());
+        idents.addAll(outputIdents());
+        return idents;
+    }
+
+    public Set<String> outputIdents() {
+        return formulaScope.keySet();
     }
 
     private MSolverResult<N> solve(String name,
@@ -55,7 +73,7 @@ public class MSolver<N> {
         if (!formulaScope.containsKey(varName)) return error(varName, "is not defined in scope", accumulatedResult);
 
         //todo: may consider using immutable set to improve performance
-        HashSet<String> newVars =new HashSet<>();
+        HashSet<String> newVars = new HashSet<>();
         newVars.addAll(forVars);
         newVars.add(varName);
 

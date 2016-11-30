@@ -12,12 +12,12 @@ import org.fobbyal.msolver.sovler.value.ValueCache;
  */
 public class IfOperation<N> extends DynamicNumberMember<N> {
 
-    private final Predicate<N> predicate;
+    private final BooleanExpression<N> booleanExpression;
     private final NumberMSolverMember<N> thenMember;
     private final NumberMSolverMember<N> elseMember;
 
-    public IfOperation(Predicate<N> predicate, NumberMSolverMember<N> thenMember, NumberMSolverMember<N> elseMember) {
-        this.predicate = predicate;
+    public IfOperation(BooleanExpression<N> booleanExpression, NumberMSolverMember<N> thenMember, NumberMSolverMember<N> elseMember) {
+        this.booleanExpression = booleanExpression;
         this.thenMember = thenMember;
         this.elseMember = elseMember;
     }
@@ -25,18 +25,18 @@ public class IfOperation<N> extends DynamicNumberMember<N> {
     @Override
     public MSolverResult<N> eval(ValueCache<N> context) {
 
-        return predicate.eval(context).flatMap(
+        return booleanExpression.eval(context).flatMap(
                 boolValue -> boolValue ? thenMember.eval(context) : elseMember.eval(context)
         );
     }
 
     @Override
     protected String[] findVars() {
-        return concat(concat(predicate.getVars(), thenMember.getVars()), elseMember.getVars());
+        return concat(concat(booleanExpression.getVars(), thenMember.getVars()), elseMember.getVars());
     }
 
 /*    @Override
     public String toString() {
-        return "if(" + predicate + "," + thenMember + "," + elseMember + ")";
+        return "if(" + booleanExpression + "," + thenMember + "," + elseMember + ")";
     }*/
 }

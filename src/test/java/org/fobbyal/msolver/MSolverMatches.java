@@ -91,6 +91,11 @@ public class MSolverMatches {
         return varMarcher(varName, Matchers.closeTo(value, Math.abs(value * 0.000001)));
     }
 
+    public static Matcher<Map<String, MSolverResult<Double>>> varCloseTo(String varName, double value, double
+            toleranceLimit) {
+        return varMarcher(varName, Matchers.closeTo(value, toleranceLimit));
+    }
+
     static <T> Matcher<Map<String, MSolverResult<T>>> varMarcher(String varName, Matcher<T> matcher) {
         return new BaseMatcher<Map<String, MSolverResult<T>>>() {
             @Override
@@ -119,6 +124,13 @@ public class MSolverMatches {
 
     public static Matcher<Map<String, MSolverResult<BigDecimal>>> varCloseTo(String varName, String bdStr) {
         return varCloseTo(varName, new BigDecimal(bdStr));
+    }
+
+
+    public static Matcher<Map<String, MSolverResult<BigDecimal>>> varCloseTo(String varName,
+                                                                             BigDecimal bd,
+                                                                             BigDecimal toleranceLimit) {
+        return varMarcher(varName, Matchers.closeTo(bd, toleranceLimit));
     }
 
     public static Matcher<Map<String, MSolverResult<BigDecimal>>> varCloseTo(String varName, BigDecimal bd) {

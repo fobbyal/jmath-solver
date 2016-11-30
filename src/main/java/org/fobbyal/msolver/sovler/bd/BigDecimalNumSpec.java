@@ -1,10 +1,10 @@
 package org.fobbyal.msolver.sovler.bd;
 
 import org.fobbyal.msolver.sovler.NumSpec;
-import org.fobbyal.msolver.sovler.tree.ComparisonPredicate;
+import org.fobbyal.msolver.sovler.tree.BooleanExpression;
+import org.fobbyal.msolver.sovler.tree.Comparison;
 import org.fobbyal.msolver.sovler.tree.MathFunction;
 import org.fobbyal.msolver.sovler.tree.NumberMSolverMember;
-import org.fobbyal.msolver.sovler.tree.Predicate;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -34,6 +34,7 @@ public class BigDecimalNumSpec implements NumSpec<BigDecimal> {
     private final MathContext context;
     private final Function<BigDecimal, BigDecimal> negate;
 
+
     public BigDecimalNumSpec(MathContext context, Map<String,
             Function<List<NumberMSolverMember<BigDecimal>>, NumberMSolverMember<BigDecimal>>> functionMap) {
         this.context = context == null ? MathContext.DECIMAL64 : context;
@@ -50,7 +51,7 @@ public class BigDecimalNumSpec implements NumSpec<BigDecimal> {
         multiplication = (a, b) -> a.multiply(b, this.context);
         division = (a, b) -> a.divide(b, this.context);
 
-        pow = (v1, v2) -> {
+        BinaryOperator<BigDecimal> floatPower = (v1, v2) -> {
             int signOf2 = v2.signum();
             double dn1 = v1.doubleValue();
             v2 = v2.multiply(new BigDecimal(signOf2)); // n2 is now positive
@@ -67,6 +68,12 @@ public class BigDecimalNumSpec implements NumSpec<BigDecimal> {
             }
             return result;
 
+        };
+
+        pow = (v1, v2) -> {
+            if (v2.stripTrailingZeros().scale() <= 0)
+                return v1.pow(v2.intValue());
+            return floatPower.apply(v1, v2);
         };
         negate = bd -> bd.negate(this.context);
 
@@ -136,7 +143,7 @@ public class BigDecimalNumSpec implements NumSpec<BigDecimal> {
     }
 
     @Override
-    public ComparisonPredicate<BigDecimal> createComparison(NumberMSolverMember<BigDecimal> left, Predicate.Operator optr, NumberMSolverMember<BigDecimal> right) {
+    public Comparison<BigDecimal> createComparison(NumberMSolverMember<BigDecimal> left, BooleanExpression.Operator optr, NumberMSolverMember<BigDecimal> right) {
         return new BigDecimalComparison(left, optr, right);
     }
 

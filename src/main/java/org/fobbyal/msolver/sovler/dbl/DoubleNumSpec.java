@@ -1,10 +1,10 @@
 package org.fobbyal.msolver.sovler.dbl;
 
 import org.fobbyal.msolver.sovler.NumSpec;
-import org.fobbyal.msolver.sovler.tree.ComparisonPredicate;
+import org.fobbyal.msolver.sovler.tree.BooleanExpression;
+import org.fobbyal.msolver.sovler.tree.Comparison;
 import org.fobbyal.msolver.sovler.tree.MathFunction;
 import org.fobbyal.msolver.sovler.tree.NumberMSolverMember;
-import org.fobbyal.msolver.sovler.tree.Predicate;
 import org.fobbyal.msolver.sovler.value.ResultException;
 
 import java.util.List;
@@ -218,8 +218,8 @@ public class DoubleNumSpec implements NumSpec<Double> {
     }
 
     @Override
-    public ComparisonPredicate<Double> createComparison(NumberMSolverMember<Double> left, Predicate.Operator optr,
-                                                        NumberMSolverMember<Double> right) {
+    public Comparison<Double> createComparison(NumberMSolverMember<Double> left, BooleanExpression.Operator optr,
+                                               NumberMSolverMember<Double> right) {
         return new DoubleComparison(left, optr, right);
     }
 

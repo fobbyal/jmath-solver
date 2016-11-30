@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.fobbyal</groupId>
     <artifactId>jmath-solver</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <build>
         <pluginManagement>
             <plugins>

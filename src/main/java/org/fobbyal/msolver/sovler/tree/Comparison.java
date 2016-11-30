@@ -12,12 +12,12 @@ import java.util.Comparator;
  * Creation Time 8/13/16 11:03 PM
  * Project for jmath-solver.
  */
-public abstract class ComparisonPredicate<N> extends AbstractPredicate<N> {
+public abstract class Comparison<N> extends AbstractBooleanExpression<N> {
     private final NumberMSolverMember<N> left;
     private final NumberMSolverMember<N> right;
     private final Operator op;
 
-    public ComparisonPredicate(NumberMSolverMember<N> left, Operator op, NumberMSolverMember<N> right) {
+    public Comparison(NumberMSolverMember<N> left, Operator op, NumberMSolverMember<N> right) {
         this.left = left;
         this.right = right;
         this.op = op;
