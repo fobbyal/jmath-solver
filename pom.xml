@@ -54,6 +54,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
+                            <!--suppress MavenModelInspection -->
                             <Implementation-Build>${build.number}</Implementation-Build>
                         </manifestEntries>
                     </archive>
