@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.fobbyal</groupId>
     <artifactId>jmath-solver</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
     <build>
         <pluginManagement>
             <plugins>
@@ -53,14 +53,8 @@
                 <version>3.0.2</version>
                 <configuration>
                     <archive>
-                        <index>false</index>
-                        <manifest>
-                            <addClasspath>false</addClasspath>
-                        </manifest>
                         <manifestEntries>
-                            <Implementation-Build>{build.number}</Implementation-Build>
-                            <Permissions>all-permissions</Permissions>
-                            <Codebase>*</Codebase>
+                            <Implementation-Build>${build.number}</Implementation-Build>
                         </manifestEntries>
                     </archive>
                 </configuration>
