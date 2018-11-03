@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.fobbyal.msolver.sovler.value.MSolverResult;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * Created by fobbyal
@@ -21,7 +22,12 @@ public class MSolverResultSerializer extends StdSerializer<MSolverResult> {
     @Override
     public void serialize(MSolverResult vCalcResult, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         if (vCalcResult.isValid()) {
-            jsonGenerator.writeString(vCalcResult.unwrap().toString());
+            Object unwrap = vCalcResult.unwrap();
+            if (unwrap instanceof BigDecimal) {
+                jsonGenerator.writeString(((BigDecimal) unwrap).stripTrailingZeros().toPlainString());
+            } else {
+                jsonGenerator.writeString(unwrap.toString());
+            }
         } else {
             jsonGenerator.writeString(vCalcResult.toString());
         }
