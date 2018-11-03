@@ -54,6 +54,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
+                            <!--suppress MavenModelInspection -->
                             <Implementation-Build>${build.number}</Implementation-Build>
                         </manifestEntries>
                     </archive>
@@ -139,7 +140,7 @@
         <testng.version>6.9.10</testng.version>
 
         <!-- todo: may not need the following version -->
-        <jackson2.version>2.8.1</jackson2.version>
+        <jackson2.version>2.8.11</jackson2.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>

@@ -108,7 +108,7 @@ public class MSolverMatches {
 
             @Override
             public void describeTo(Description description) {
-                matcher.describeTo(description.appendText(varName + " should  "));
+                matcher.describeTo(description.appendText(varName + " to be "));
             }
 
             @SuppressWarnings("unchecked")
